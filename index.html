@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link ref="stylesheet" href="./stylesheet.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="./function.js"></script>
+        <title>To-Do List</title>
+    </head>
+    <body onload="display()">
+
+    
+        <div class = "container">
+            <h3>MY TO-DO LIST</h3>
+            <div id="date"></div>
+        </div>
+    
+<form>
+
+        <div class = "container-fluid">
+            <div class = "row">
+                <div class="col-sm-12 col-lg-5 col-md-6">
+                    <form>
+                        <div class="form-group">
+                        <label>Task to perform</label> 
+                        <input type="text" class="form-control" id='form-title' placeholder="Title...">           
+                    </div>
+                </form>
+            </div>
+            
+                <div class="col-sm-12 col-lg-5 col-md-6">
+                    <div class="form-group">
+                        <label>Set time</label> 
+                        <input type="datetime-local" class="form-control" id='form-time' placeholder="Mention Date-time Ex: Jan 5, 2021 15:37:25 ">           
+                    </div>
+                </div>
+            </div>
+                    <button id="add-task" type="submit" class="btn btn-primary">Add Task</button>
+                </form>
+            </div>
+                <div class="container">
+                    <ul id="list">
+                        
+                    </ul>
+                    <p id="count-down"></p>
+                </div>
+<script>
+document.getElementById("add-task").addEventListener("click", addTask);
+
+/*function addTask(){
+    let task_name = document.getElementById("form-title").value;
+    let task_time = document.getElementById("form-time").value;
+    document.getElementById("item-1").innerHTML = task_name + task_time;
+    event.preventDefault();
+}
+*/
+function addTask(){
+    var li = document.createElement("li");
+    var t_name = document.getElementById("form-title").value;
+    var t_time = document.getElementById("form-time").value;
+    var n = document.createTextNode(t_name+" ");
+    var m = document.createTextNode(t_time);
+    li.appendChild(n);
+    li.appendChild(m);
+    if (t_name === '' || t_time === '' ){
+    alert("Enter Something");
+    }
+    else{
+        document.getElementById("list").appendChild(li);
+    }
+    event.preventDefault();
+    document.getElementById("form-title").value = "";
+    document.getElementById("form-time").value = "";
+}
+document.getElementById("add-task").addEventListener("click", store);
+function store(){
+    localStorage.setItem("form-title",document.getElementById("form-title").value);
+    localStorage.setItem("form-time",document.getElementById("form-time").value);
+    console.log("ok");
+}
+window.onload = display();
+function display(){
+var name = localStorage.getItem("form-title");
+var time = localStorage.getItem("form-time");
+console.log("works!");
+}
+document.getElementById("add-task").addEventListener("click", setInterval);
+document.getElementById("add-task").addEventListener("click", timer);
+var Dtime = setInterval(timer,1000);
+function timer(){
+    var deadline = new Date(document.getElementById("form-time").value).getTime();
+    var timenow = new Date().getTime();
+    if(deadline < timenow){
+        alert("Please enter correct time");
+    }
+    var t = deadline-timenow;
+    var d = Math.floor(t / (1000 * 60 * 60 * 24));
+    var h = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var m = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+    var s = Math.floor((t % (1000 * 60)) / 1000);
+    document.getElementById("count-down").innerHTML = d + "d " + h + "h "+ m + "m " + s + "s ";
+    if (t<0){
+        document.getElementById("count-down").innerHTML = "TIME-OUT"
+        alert("session expired!");
+    }
+}
+</script>
+</body>
+</html>
